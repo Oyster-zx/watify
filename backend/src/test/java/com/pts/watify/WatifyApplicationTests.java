@@ -1,20 +1,34 @@
 package com.pts.watify;
 
 import com.pts.watify.bank_api.CSASClient;
-import com.pts.watify.bank_api.Transaction;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.pts.watify.model.Invoice;
+import com.pts.watify.model.vat_report.VatReportWithMetadata;
+import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import java.math.BigDecimal;
+
 class WatifyApplicationTests {
 
     @Autowired
     CSASClient csasClient;
 
     @Test
+    void testXml() throws JsonProcessingException {
+        ObjectMapper xmlMapper = new XmlMapper();
+        var invoice = new Invoice();
+        invoice.setBasePayment(BigDecimal.valueOf(100000));
+        invoice.setVatPayment(BigDecimal.valueOf(21000));
+        String xml = xmlMapper.writeValueAsString(new VatReportWithMetadata(invoice));
+        System.out.println(xmlMapper.writeValueAsString(xml));
+    }
+
     void transactions() {
-       var transactionResponse = csasClient.getAllTransactions(
+        var transactionResponse = csasClient.getAllTransactions(
                 "AA195E7DB499B4D9F48D46C208625FF53F2245F7",
                 "d5124a75-0ee6-451a-94be-d0dbca8feea1",
                 "ewogICJ0eXBlIjogInRva2VuIiwKICAibmFtZSI6ICI4MDAwLTAxLTAxLTAwLjAwLjAwLjAwMDAwMSIsCiAgInNlc3Npb25VVUlEIjogIjIxN2M4Yjk1LWE0MTMtNDkzZS04NzdjLWMyNjhiNjhhNGM0MCIsCiAgInNjb3BlcyI6IFsKICAgICJzaWJsaW5ncy5hY2NvdW50cyIKICBdLAogICJjb25zZW50IjogWwogICAgewogICAgICAiaWQiOiAiMDAwMDAiLAogICAgICAiY29udGVudCI6ICJmdWxsIgogICAgfQogIF0sCiAgImxpbWl0cyI6IHsKICAgICJhY2Nlc3NTZWNvbmRzIjogMzAwLAogICAgInJlZnJlc2hTZWNvbmRzIjogNzc3NjAwMAogIH0sCiAgImFjY2Vzc1R5cGUiOiAibnVsbCIsCiAgImV4cGlyYXRpb24iOiAiMjAyMS0xMC0xNlQxNDoyMDo1NC4xMDVaIgp9"
@@ -22,6 +36,7 @@ class WatifyApplicationTests {
         System.out.println(transactionResponse);
 
     }
+
     @Test
     void accounts() {
         var account = csasClient.getAllAccounts(
