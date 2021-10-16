@@ -10,8 +10,7 @@ import java.math.BigDecimal;
 
 @Getter
 public class Income {
-    //TODO add háleřy
-
+    //TODO add
     @JacksonXmlProperty(localName = "obrat23", isAttribute = true)
     private final BigDecimal revenue;
 

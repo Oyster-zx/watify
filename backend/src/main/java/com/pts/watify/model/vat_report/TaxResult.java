@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 
 @Getter
 public class TaxResult {
-    //TODO add háleřy
 
     @JacksonXmlProperty(localName = "dan_zocelk", isAttribute = true)
     final BigDecimal vatFromIncome;
