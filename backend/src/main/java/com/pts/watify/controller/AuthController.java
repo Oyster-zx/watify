@@ -8,7 +8,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     @GetMapping("/redirectedFromBank")
-    public void redirectFromBank(@RequestParam("accessToken") String accessToken) {
+    public void redirectFromBank(@RequestParam("access_token") String accessToken) {
         System.out.println(accessToken);
+    }
+
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
     }
 }
