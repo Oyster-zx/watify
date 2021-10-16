@@ -1,5 +1,8 @@
 package com.pts.watify.model;
 
+import lombok.Getter;
+
+@Getter
 public class Advisor {
     private final String name ="Švarc";
 
@@ -8,6 +11,5 @@ public class Advisor {
     private final String individualNumber = "123456789";
 
     private final String companyName = "Umbrella";
-
 
 }

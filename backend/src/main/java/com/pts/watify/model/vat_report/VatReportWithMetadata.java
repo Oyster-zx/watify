@@ -2,11 +2,12 @@ package com.pts.watify.model.vat_report;
 
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.pts.watify.model.Advisor;
 import com.pts.watify.model.Invoice;
+import com.pts.watify.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
@@ -23,10 +24,11 @@ public class VatReportWithMetadata {
     @JacksonXmlProperty(localName = "DPHDP3")
     private final VatReport report;
 
-    public VatReportWithMetadata(LocalDate sentDate, Invoice invoice) {
+    public VatReportWithMetadata(LocalDate sentDate, Invoice invoice, User user, Advisor advisor) {
         var reportMonth = Month.of(sentDate.getMonthValue() - 1); // TODO set not only for previous month
         this.report = new VatReport(
                 new General(YearMonth.of(sentDate.getYear(), reportMonth), sentDate),
+                new Personal(user, advisor),
                 new Income(invoice),
                 new TaxResult(invoice)
         );
@@ -39,9 +41,9 @@ public class VatReportWithMetadata {
 
         @JacksonXmlProperty(localName = "VetaD")
         private final General generalInfo;
-//
-//        @JacksonXmlProperty(localName = "VetaP")
-//        private Personal personalInfo;
+
+        @JacksonXmlProperty(localName = "VetaP")
+        private Personal personalInfo;
 
         @JacksonXmlProperty(localName = "Veta1")
         private final Income incomeInfo;
