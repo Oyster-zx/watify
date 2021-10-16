@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.pts.watify.bank_api.csas.CSASPaymentClient;
 import com.pts.watify.bank_api.csas.CSASTransactionClient;
+import com.pts.watify.model.Advisor;
 import com.pts.watify.model.Invoice;
+import com.pts.watify.model.User;
 import com.pts.watify.model.vat_report.VatReportWithMetadata;
 import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
@@ -37,9 +39,12 @@ class WatifyApplicationTests {
         var invoice = new Invoice();
         invoice.setBasePayment(BigDecimal.valueOf(100000));
         invoice.setVatPayment(BigDecimal.valueOf(21000));
+
+        var user = new User();
+        var advisor = new Advisor();
         xmlMapper.writeValue(
                 new File("/Users/alexanderpoddubny/report.xml"),
-                new VatReportWithMetadata(LocalDate.now(), invoice)
+                new VatReportWithMetadata(LocalDate.now(), invoice, user, advisor)
         );
     }
 

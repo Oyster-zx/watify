@@ -8,11 +8,12 @@ import java.math.BigDecimal;
 
 @Getter
 public class Income {
-    @JacksonXmlProperty(localName = "obrat23", isAttribute = true)
-    private final BigDecimal revenue;
 
     @JacksonXmlProperty(localName = "dan23", isAttribute = true)
     private final BigDecimal vat;
+
+    @JacksonXmlProperty(localName = "obrat23", isAttribute = true)
+    private final BigDecimal revenue;
 
     public Income(Invoice invoice){
         this.revenue = invoice.getBasePayment();

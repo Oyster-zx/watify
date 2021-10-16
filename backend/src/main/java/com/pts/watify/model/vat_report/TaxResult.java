@@ -15,11 +15,11 @@ public class TaxResult {
     @JacksonXmlProperty(localName = "dano", isAttribute = true)
     final BigDecimal vatFromAdditionalReport = BigDecimal.ZERO;
 
-    @JacksonXmlProperty(localName = "dano_no", isAttribute = true)
-    final BigDecimal vatToBeReturned = BigDecimal.ZERO;
-
     @JacksonXmlProperty(localName = "dano_da", isAttribute = true)
     final BigDecimal finalVat;
+
+    @JacksonXmlProperty(localName = "dano_no", isAttribute = true)
+    final BigDecimal vatToBeReturned = BigDecimal.ZERO;
 
     public TaxResult(Invoice invoice){
         this.vatFromIncome = invoice.getVatPayment();
