@@ -1,13 +1,15 @@
-package com.pts.watify.bank_api;
+package com.pts.watify.bank_api.csas;
 
+import com.pts.watify.bank_api.csas.transaction.AccountResponse;
+import com.pts.watify.bank_api.csas.transaction.TransactionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "csas-api", url = "https://webapi.developers.erstegroup.com/api/csas/public/sandbox/v2/accounts/my")
-public interface CSASClient {
+@FeignClient(name = "csas-transaction-api", url = "https://webapi.developers.erstegroup.com/api/csas/public/sandbox/v2/accounts/my")
+public interface CSASTransactionClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/accounts/{id}/transactions")
     TransactionResponse getAllTransactions(
