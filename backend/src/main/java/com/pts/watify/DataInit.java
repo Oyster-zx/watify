@@ -14,6 +14,9 @@ public class DataInit {
         return (args) -> {
             User testUser = User.builder()
                     .name("Jiří Spokojený")
+                    .ico("2343242323")
+                    .dic("CZ23423423")
+                    .bankAccount("234234234/0800")
                     .build();
             userDao.save(testUser);
         };
