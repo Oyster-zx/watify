@@ -1,4 +1,4 @@
-package com.pts.watify.bank_api;
+package com.pts.watify.bank_api.csas.transaction;
 
 import lombok.Data;
 

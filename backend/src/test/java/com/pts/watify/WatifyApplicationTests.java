@@ -3,10 +3,11 @@ package com.pts.watify;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.pts.watify.bank_api.CSASPaymentClient;
-import com.pts.watify.bank_api.CSASTransactionClient;
+import com.pts.watify.bank_api.csas.CSASPaymentClient;
+import com.pts.watify.bank_api.csas.CSASTransactionClient;
 import com.pts.watify.model.Invoice;
 import com.pts.watify.model.vat_report.VatReportWithMetadata;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 
 @SpringBootTest
+@RequiredArgsConstructor
 class WatifyApplicationTests {
+
+    public final String webApiKey = "d5124a75-0ee6-451a-94be-d0dbca8feea1";
+    public final String token = "ewogICJ0eXBlIjogInRva2VuIiwKICAibmFtZSI6ICI4MDAwLTAxLTAxLTAwLjAwLjAwLjAwMDAwMSIsCiAgInNlc3Npb25VVUlEIjogImI2Mzc1Mjk1LTMxNDItNGMzZC04NDNjLWNhOTM4MzdlOWFiMiIsCiAgInNjb3BlcyI6IFsKICAgICJzaWJsaW5ncy5hY2NvdW50cyIKICBdLAogICJjb25zZW50IjogWwogICAgewogICAgICAiaWQiOiAiMDAwMDAiLAogICAgICAiY29udGVudCI6ICJmdWxsIgogICAgfQogIF0sCiAgImxpbWl0cyI6IHsKICAgICJhY2Nlc3NTZWNvbmRzIjogMzAwLAogICAgInJlZnJlc2hTZWNvbmRzIjogNzc3NjAwMAogIH0sCiAgImFjY2Vzc1R5cGUiOiAibnVsbCIsCiAgImV4cGlyYXRpb24iOiAiMjAyMS0xMC0xNlQxNjo1ODoxMy45OTVaIgp9";
 
     @Autowired
     CSASTransactionClient csasTransactionClient;
@@ -35,8 +40,8 @@ class WatifyApplicationTests {
     void transactions() {
         var transactionResponse = csasTransactionClient.getAllTransactions(
                 "AA195E7DB499B4D9F48D46C208625FF53F2245F7",
-                "d5124a75-0ee6-451a-94be-d0dbca8feea1",
-                "ewogICJ0eXBlIjogInRva2VuIiwKICAibmFtZSI6ICI4MDAwLTAxLTAxLTAwLjAwLjAwLjAwMDAwMSIsCiAgInNlc3Npb25VVUlEIjogIjIxN2M4Yjk1LWE0MTMtNDkzZS04NzdjLWMyNjhiNjhhNGM0MCIsCiAgInNjb3BlcyI6IFsKICAgICJzaWJsaW5ncy5hY2NvdW50cyIKICBdLAogICJjb25zZW50IjogWwogICAgewogICAgICAiaWQiOiAiMDAwMDAiLAogICAgICAiY29udGVudCI6ICJmdWxsIgogICAgfQogIF0sCiAgImxpbWl0cyI6IHsKICAgICJhY2Nlc3NTZWNvbmRzIjogMzAwLAogICAgInJlZnJlc2hTZWNvbmRzIjogNzc3NjAwMAogIH0sCiAgImFjY2Vzc1R5cGUiOiAibnVsbCIsCiAgImV4cGlyYXRpb24iOiAiMjAyMS0xMC0xNlQxNDoyMDo1NC4xMDVaIgp9"
+                webApiKey,
+                token
         );
         System.out.println(transactionResponse);
 
@@ -45,13 +50,26 @@ class WatifyApplicationTests {
     @Test
     void accounts() {
         var account = csasTransactionClient.getAllAccounts(
-                "d5124a75-0ee6-451a-94be-d0dbca8feea1",
-                "ewogICJ0eXBlIjogInRva2VuIiwKICAibmFtZSI6ICI4MDAwLTAxLTAxLTAwLjAwLjAwLjAwMDAwMSIsCiAgInNlc3Npb25VVUlEIjogIjg5MDUyOGQxLTIwOTktNGNhYi1iNTBhLWM1NjUzZjg3MjI4MCIsCiAgInNjb3BlcyI6IFsKICAgICJzaWJsaW5ncy5hY2NvdW50cyIKICBdLAogICJjb25zZW50IjogWwogICAgewogICAgICAiaWQiOiAiMDAwMDAiLAogICAgICAiY29udGVudCI6ICJmdWxsIgogICAgfQogIF0sCiAgImxpbWl0cyI6IHsKICAgICJhY2Nlc3NTZWNvbmRzIjogMzAwLAogICAgInJlZnJlc2hTZWNvbmRzIjogNzc3NjAwMAogIH0sCiAgImFjY2Vzc1R5cGUiOiAibnVsbCIsCiAgImV4cGlyYXRpb24iOiAiMjAyMS0xMC0xNlQxMzo0NDoyNC45NzBaIgp9"
+                webApiKey,
+                token
         );
     }
 
     @Test
     void paymentInit() {
+        var paymentResponse = csasPaymentClient.initPayment(
+                webApiKey,
+                token
+        );
+
+        var authorizationResponse = csasPaymentClient.authorizePayment(
+                paymentResponse.getSignInfo().getSignId(),
+                paymentResponse.getSignInfo().getHash(),
+                webApiKey,
+                token
+        );
+
+        System.out.println(authorizationResponse);
     }
 
 }

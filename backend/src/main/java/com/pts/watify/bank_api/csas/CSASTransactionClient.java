@@ -1,5 +1,7 @@
-package com.pts.watify.bank_api;
+package com.pts.watify.bank_api.csas;
 
+import com.pts.watify.bank_api.csas.transaction.AccountResponse;
+import com.pts.watify.bank_api.csas.transaction.TransactionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
