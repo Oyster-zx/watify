@@ -1,5 +1,6 @@
 package com.pts.watify.model;
 
+import com.pts.watify.model.vat_report.VatReportWithMetadata;
 import lombok.Data;
 
 import javax.persistence.Column;
