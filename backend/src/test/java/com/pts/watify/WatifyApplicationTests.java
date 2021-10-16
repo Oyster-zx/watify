@@ -1,5 +1,6 @@
 package com.pts.watify;
 
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.pts.watify.bank_api.CSASClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +11,10 @@ import lombok.val;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 class WatifyApplicationTests {
 
@@ -18,13 +22,16 @@ class WatifyApplicationTests {
     CSASClient csasClient;
 
     @Test
-    void testXml() throws JsonProcessingException {
+    void testXml() throws IOException {
         ObjectMapper xmlMapper = new XmlMapper();
+        xmlMapper.enable(SerializationFeature.INDENT_OUTPUT);
         var invoice = new Invoice();
         invoice.setBasePayment(BigDecimal.valueOf(100000));
         invoice.setVatPayment(BigDecimal.valueOf(21000));
-        String xml = xmlMapper.writeValueAsString(new VatReportWithMetadata(invoice));
-        System.out.println(xmlMapper.writeValueAsString(xml));
+        xmlMapper.writeValue(
+                new File("/Users/alexanderpoddubny/report.xml"),
+                new VatReportWithMetadata(LocalDate.now(), invoice)
+        );
     }
 
     void transactions() {

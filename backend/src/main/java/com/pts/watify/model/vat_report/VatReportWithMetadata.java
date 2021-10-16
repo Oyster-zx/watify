@@ -7,9 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.YearMonth;
 
 @Getter
-@JacksonXmlRootElement(localName="Pisemnost")
+@JacksonXmlRootElement(localName = "Pisemnost")
 public class VatReportWithMetadata {
     @JacksonXmlProperty(localName = "nazevSW", isAttribute = true)
     private final String title = "EPO MF ČR";
@@ -20,20 +23,22 @@ public class VatReportWithMetadata {
     @JacksonXmlProperty(localName = "DPHDP3")
     private final VatReport report;
 
-    public VatReportWithMetadata(Invoice invoice){
+    public VatReportWithMetadata(LocalDate sentDate, Invoice invoice) {
+        var reportMonth = Month.of(sentDate.getMonthValue() - 1); // TODO set not only for previous month
         this.report = new VatReport(
+                new General(YearMonth.of(sentDate.getYear(), reportMonth), sentDate),
                 new Income(invoice),
                 new TaxResult(invoice)
-                );
+        );
     }
 
     @AllArgsConstructor
     class VatReport {
         @JacksonXmlProperty(isAttribute = true)
         private final String version = "01.02";
-//
-//        @JacksonXmlProperty(localName = "VetaD")
-//        private General generalInfo;
+
+        @JacksonXmlProperty(localName = "VetaD")
+        private final General generalInfo;
 //
 //        @JacksonXmlProperty(localName = "VetaP")
 //        private Personal personalInfo;
